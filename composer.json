@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "behat/symfony2-extension": "~2.0"
+        "behat/symfony2-extension": "~2.0",
+        "phpunit/phpunit": "~4.4"
     },
     "scripts": {
         "post-root-package-install": [
