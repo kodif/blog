@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Kodify\BlogBundle\Entity\Author;
+use Kodify\BlogBundle\Entity\Comment;
 use Kodify\BlogBundle\Entity\Post;
 
 /**
@@ -25,6 +26,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     {
         $entityManager = $this->getEntityManager();
 
+        $entityManager->createQuery('DELETE KodifyBlogBundle:Comment')->execute();
         $entityManager->createQuery('DELETE KodifyBlogBundle:Post')->execute();
         $entityManager->createQuery('DELETE KodifyBlogBundle:Author')->execute();
 
@@ -103,19 +105,25 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    private function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
      * @Given the following comments exist:
      */
     public function theFollowingCommentsExist(TableNode $table)
     {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table as $row) {
+            $author = $entityManager->getRepository('KodifyBlogBundle:Author')->findOneBy(array('name' => $row['author']));
+            $post = $entityManager->getRepository('KodifyBlogBundle:Post')->findOneBy(array('title' => $row['post title']));
+
+            $comment= new Comment();
+            $comment->setAuthor($author);
+            $comment->setPost($post);
+            $comment->setContent($row['text']);
+
+            $entityManager->persist($comment);
+        }
+
+        $entityManager->flush();
     }
 
     /**
@@ -180,5 +188,13 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     public function aCommentShouldBeCreatedForThePostWithTheProvidedData()
     {
         throw new PendingException();
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }
