@@ -11,7 +11,7 @@ class CommentType extends AbstractType
         $builder
             ->add('content')
             ->add('author')
-            ->add('publish', 'submit', ['label' => 'publish', 'attr' => ['class' => 'btn btn-success']]);
+            ->add('publish', 'submit', ['label' => 'publish', 'attr' => ['class' => 'btn btn-success', 'role' => 'link']]);
     }
 
     public function getName()
