@@ -57,7 +57,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
         $entityManager = $this->getEntityManager();
 
         foreach ($table as $row) {
-            $author = $entityManager->getRepository('KodifyBlogBundle:Author')->findOneBy(array('name' => $row['author']));
+            $author = $this->getAuthorByName($row['author']);
 
             $post = new Post();
             $post->setTitle($row['title']);
@@ -75,9 +75,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function iVisitTheHomePage()
     {
-        $session = $this->getMink()->getSession();
-
-        $session->visit('/');
+        $this->visit('/');
     }
 
     /**
@@ -85,7 +83,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function thePostWithTitleIsOnFirstColumnFirstRow($title)
     {
-        $page = $this->getMink()->getSession()->getPage();
+        $this->assertPageContainsText($title);
     }
 
     /**
@@ -93,7 +91,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function thePostWithTitleIsOnTheSecondColumnFirstRow($title)
     {
-        $page = $this->getMink()->getSession()->getPage();
+        $this->assertPageContainsText($title);
     }
 
     /**
@@ -101,7 +99,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function thePostWithTitleIsOnTheFirstColumnSecondRow($title)
     {
-        $page = $this->getMink()->getSession()->getPage();
+        $this->assertPageContainsText($title);
     }
 
     /**
@@ -112,8 +110,8 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
         $entityManager = $this->getEntityManager();
 
         foreach ($table as $row) {
-            $author = $entityManager->getRepository('KodifyBlogBundle:Author')->findOneBy(array('name' => $row['author']));
-            $post = $entityManager->getRepository('KodifyBlogBundle:Post')->findOneBy(array('title' => $row['post title']));
+            $author = $this->getAuthorByName($row['author']);
+            $post = $this->getPostByTitle($row['post title']);
 
             $comment= new Comment();
             $comment->setAuthor($author);
@@ -127,11 +125,17 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     }
 
     /**
-     * @Given I visit the page for the post with title :arg1
+     * @Given I visit the page for the post with title :title
      */
-    public function iVisitThePageForThePostWithTitle($arg1)
+    public function iVisitThePageForThePostWithTitle($title)
     {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        $post = $this->getPostByTitle($title, $entityManager);
+
+        $url = '/posts/' . $post->getId();
+
+        $this->visit($url);
     }
 
     /**
@@ -196,5 +200,29 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     private function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return Post
+     */
+    private function getPostByTitle($title)
+    {
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->getRepository('KodifyBlogBundle:Post')->findOneBy(array('title' => $title));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Author
+     */
+    private function getAuthorByName($name)
+    {
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->getRepository('KodifyBlogBundle:Author')->findOneBy(array('name' => $name));
     }
 }
