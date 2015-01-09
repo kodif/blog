@@ -18,5 +18,8 @@
             {% endfor %}
             </ul>
         </div>
+        <div>
+            <a href="{{ path('create_comment', {'id' : post.id}) }}">create comment</a>
+        </div>
     </div>
 {% endblock %}

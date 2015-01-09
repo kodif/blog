@@ -7,6 +7,9 @@ authors:
 create_post:
     path:     /posts/create
     defaults: { _controller: KodifyBlogBundle:Posts:create }
+create_comment:
+    path:     /posts/{id}/comment
+    defaults: { _controller: KodifyBlogBundle:Comments:create }
 view_post:
     path:     /posts/{id}
     defaults: { _controller: KodifyBlogBundle:Posts:view }

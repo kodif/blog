@@ -179,11 +179,16 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     }
 
     /**
-     * @When I fill the form with :arg1
+     * @When I fill the form with :data
      */
-    public function iFillTheFormWith($arg1)
+    public function iFillTheFormWith($data)
     {
-        throw new PendingException();
+        $fields = json_decode(str_replace("'", '"', $data), true);
+
+        $author = $this->getAuthorByName($fields['author']);
+
+        $this->fillField('Comment_content', $fields['text']);
+        $this->fillField('Comment_author', $author->getId());
     }
 
     /**
