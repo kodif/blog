@@ -183,6 +183,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function iFillTheFormWith($data)
     {
+        // I don't want to spend time looking for escape the data.
         $fields = json_decode(str_replace("'", '"', $data), true);
 
         $author = $this->getAuthorByName($fields['author']);
