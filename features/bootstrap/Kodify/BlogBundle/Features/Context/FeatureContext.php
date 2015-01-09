@@ -196,7 +196,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function aCommentShouldBeCreatedForThePostWithTheProvidedData()
     {
-        throw new PendingException();
+        $this->assertPageContainsText('Comment Created!');
     }
 
     /**
