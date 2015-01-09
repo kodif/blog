@@ -5,9 +5,10 @@ namespace Kodify\BlogBundle\Features\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelDictionary;
+use Kodify\BlogBundle\Entity\Author;
+use Kodify\BlogBundle\Entity\Post;
 
 /**
  * Defines application features from the specific context.
@@ -16,13 +17,33 @@ class FeatureContext implements Context, SnippetAcceptingContext
 {
     use KernelDictionary;
 
+    /**
+     * @BeforeScenario
+     */
+    public function cleanDB()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $entityManager->createQuery('DELETE KodifyBlogBundle:Post')->execute();
+        $entityManager->createQuery('DELETE KodifyBlogBundle:Author')->execute();
+
+        $entityManager->flush();
+    }
 
     /**
      * @Given the following authors exist:
      */
     public function theFollowingAuthorsExist(TableNode $table)
     {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table as $row) {
+            $author = new Author();
+            $author->setName($row['name']);
+            $entityManager->persist($author);
+        }
+
+        $entityManager->flush();
     }
 
     /**
@@ -30,7 +51,20 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function theFollowingPostsExist(TableNode $table)
     {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table as $row) {
+            $author = $entityManager->getRepository('KodifyBlogBundle:Author')->findOneBy(array('name' => $row['author']));
+
+            $post = new Post();
+            $post->setTitle($row['title']);
+            $post->setContent($row['content']);
+            $post->setAuthor($author);
+
+            $entityManager->persist($post);
+        }
+
+        $entityManager->flush();
     }
 
     /**
@@ -63,5 +97,13 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function thePostWithTitleIsOnTheFirstColumnSecondRow($arg1)
     {
         throw new PendingException();
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }
