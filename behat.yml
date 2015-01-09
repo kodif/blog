@@ -1,0 +1,9 @@
+default:
+    extensions:
+        Behat\Symfony2Extension: ~
+    suites:
+        kodify_suite:
+            type: symfony_bundle
+            bundle: KodifyBlogBundle
+            paths:
+                - %paths.base%/features
