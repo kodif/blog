@@ -143,39 +143,39 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      */
     public function iShouldSeeAMessageSayingThereAreNoComments()
     {
-        throw new PendingException();
+        $this->assertPageContainsText('No comments');
     }
 
     /**
      * @Then I should see a comments section with :arg1 comment
      */
-    public function iShouldSeeACommentsSectionWithComment($arg1)
+    public function iShouldSeeACommentsSectionWithComment($content)
     {
-        throw new PendingException();
+        $this->assertPageNotContainsText('No comments');
     }
 
     /**
-     * @Then The comment I see says :arg1
+     * @Then The comment I see says :content
      */
-    public function theCommentISeeSays($arg1)
+    public function theCommentISeeSays($content)
     {
-        throw new PendingException();
+        $this->assertPageContainsText($content);
     }
 
     /**
-     * @Then I don't see the comment :arg1
+     * @Then I don't see the comment :content
      */
-    public function iDonTSeeTheComment($arg1)
+    public function iDonTSeeTheComment($content)
     {
-        throw new PendingException();
+        $this->assertPageNotContainsText($content);
     }
 
     /**
-     * @When I click on the button :arg1
+     * @When I click on the button :buttonText
      */
-    public function iClickOnTheButton($arg1)
+    public function iClickOnTheButton($buttonText)
     {
-        throw new PendingException();
+        $this->clickLink($buttonText);
     }
 
     /**

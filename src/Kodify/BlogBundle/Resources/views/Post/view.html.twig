@@ -9,5 +9,14 @@
         <div class="panel-body">
             {{ post.content }}
         </div>
+        <div class="panel-comments">
+            <ul>
+            {% for comment in post.comments %}
+                <li>{{ comment.content|e }}</li>
+            {% else %}
+                <li>No comments</li>
+            {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
