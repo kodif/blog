@@ -1,6 +1,10 @@
 {% extends 'KodifyBlogBundle::base.html.twig' %}
 
 {% block content %}
+    {% if message is defined %}
+        <div class="bg-primary">{{ message }}</div>
+    {% endif %}
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <a href="{{ path('view_post',{id: post.id}) }}">{{ post.title }}</a>
@@ -9,17 +13,6 @@
         <div class="panel-body">
             {{ post.content }}
         </div>
-        <div class="panel-comments">
-            <ul>
-            {% for comment in post.comments %}
-                <li>{{ comment.content|e }}</li>
-            {% else %}
-                <li>No comments</li>
-            {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <a href="{{ path('create_comment', {'id' : post.id}) }}">create comment</a>
-        </div>
+        {% include 'KodifyBlogBundle::Comment/list.html.twig' %}
     </div>
 {% endblock %}

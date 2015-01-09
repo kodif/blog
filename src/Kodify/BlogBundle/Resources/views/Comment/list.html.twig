@@ -1,0 +1,16 @@
+{% block content %}
+    <h4>Comments</h4>
+    <div class="panel-comments">
+        <ul>
+        {% for comment in post.comments %}
+            <li>{{ comment.content|e }}</li>
+        {% else %}
+            <li>No comments</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <a href="{{ path('create_comment', {'id' : post.id}) }}">create comment</a>
+    </div>
+{% endblock %}
