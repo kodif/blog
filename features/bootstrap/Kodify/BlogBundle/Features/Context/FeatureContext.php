@@ -2,6 +2,7 @@
 
 namespace Kodify\BlogBundle\Features\Context;
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
@@ -107,5 +108,77 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     private function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * @Given the following comments exist:
+     */
+    public function theFollowingCommentsExist(TableNode $table)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I visit the page for the post with title :arg1
+     */
+    public function iVisitThePageForThePostWithTitle($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I should see a message saying there are no comments
+     */
+    public function iShouldSeeAMessageSayingThereAreNoComments()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I should see a comments section with :arg1 comment
+     */
+    public function iShouldSeeACommentsSectionWithComment($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then The comment I see says :arg1
+     */
+    public function theCommentISeeSays($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I don't see the comment :arg1
+     */
+    public function iDonTSeeTheComment($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click on the button :arg1
+     */
+    public function iClickOnTheButton($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I fill the form with :arg1
+     */
+    public function iFillTheFormWith($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a comment should be created for the post with the provided data
+     */
+    public function aCommentShouldBeCreatedForThePostWithTheProvidedData()
+    {
+        throw new PendingException();
     }
 }
