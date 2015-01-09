@@ -2,10 +2,10 @@
 
 namespace Kodify\BlogBundle\Features\Context;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Kodify\BlogBundle\Entity\Author;
 use Kodify\BlogBundle\Entity\Post;
@@ -13,7 +13,7 @@ use Kodify\BlogBundle\Entity\Post;
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext
+class FeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
     use KernelDictionary;
 
@@ -72,31 +72,33 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iVisitTheHomePage()
     {
-        throw new PendingException();
+        $session = $this->getMink()->getSession();
+
+        $session->visit('/');
     }
 
     /**
-     * @Then The post with title :arg1 is on first column, first row
+     * @Then The post with title :title is on first column, first row
      */
-    public function thePostWithTitleIsOnFirstColumnFirstRow($arg1)
+    public function thePostWithTitleIsOnFirstColumnFirstRow($title)
     {
-        throw new PendingException();
+        $page = $this->getMink()->getSession()->getPage();
     }
 
     /**
-     * @Then The post with title :arg1 is on the second column, first row
+     * @Then The post with title :title is on the second column, first row
      */
-    public function thePostWithTitleIsOnTheSecondColumnFirstRow($arg1)
+    public function thePostWithTitleIsOnTheSecondColumnFirstRow($title)
     {
-        throw new PendingException();
+        $page = $this->getMink()->getSession()->getPage();
     }
 
     /**
-     * @Then The post with title :arg1 is on the first column, second row
+     * @Then The post with title :title is on the first column, second row
      */
-    public function thePostWithTitleIsOnTheFirstColumnSecondRow($arg1)
+    public function thePostWithTitleIsOnTheFirstColumnSecondRow($title)
     {
-        throw new PendingException();
+        $page = $this->getMink()->getSession()->getPage();
     }
 
     /**
